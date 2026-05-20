@@ -1,5 +1,5 @@
 {
-  "version": "0.1.1",
+  "version": "0.1.2",
   "autoload": true,
   "autoloadToPads": true,
   "folders": [
@@ -10,13 +10,21 @@
     "chops"
   ],
   "files": [
-    "MATTBEAR_Gang_Warfare_CHOP_01.wav",
-    "MATTBEAR_Gang_Warfare_CHOP_02.wav",
-    "MATTBEAR_Gang_Warfare_CHOP_03.wav",
-    "MATTBEAR_Gang_Warfare_CHOP_04.wav",
-    "MATTBEAR_Wound_in_the_Salt_CHOP_01.wav",
-    "MATTBEAR_Wound_in_the_Salt_CHOP_02.wav",
-    "MATTBEAR_Wound_in_the_Salt_CHOP_03.wav",
-    "MATTBEAR_Wound_in_the_Salt_CHOP_04.wav"
+    "MATTBEAR_-Gang_Warfare_(_CHOP_01.wav",
+    "MATTBEAR_-Gang_Warfare_(_CHOP_02.wav",
+    "MATTBEAR_-Gang_Warfare_(_CHOP_03.wav",
+    "MATTBEAR_-Gang_Warfare_(_CHOP_04.wav",
+    "MATTBEAR_-Gang_Warfare_(_CHOP_05.wav",
+    "MATTBEAR_-Gang_Warfare_(_CHOP_06.wav",
+    "MATTBEAR_-Gang_Warfare_(_CHOP_07.wav",
+    "MATTBEAR_-Gang_Warfare_(_CHOP_08.wav",
+    "MATTBEAR_-_Wound_in_the__CHOP_01.wav",
+    "MATTBEAR_-_Wound_in_the__CHOP_02.wav",
+    "MATTBEAR_-_Wound_in_the__CHOP_03.wav",
+    "MATTBEAR_-_Wound_in_the__CHOP_04.wav",
+    "MATTBEAR_-_Wound_in_the__CHOP_05.wav",
+    "MATTBEAR_-_Wound_in_the__CHOP_06.wav",
+    "MATTBEAR_-_Wound_in_the__CHOP_07.wav",
+    "MATTBEAR_-_Wound_in_the__CHOP_08.wav"
   ]
 }
