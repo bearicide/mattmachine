@@ -1,0 +1,7 @@
+{
+  "version": "0.1.0",
+  "autosave": "autosave.json",
+  "sessions": [
+    "autosave.json"
+  ]
+}
