@@ -22,4 +22,5 @@ https://bearicide.github.io/mattmachine/
 
 ## Notes
 
-This is the starter build. MIDI, quantized loop launching, uploaded sample packs, PWA install support, and Drive/shared upload flow are next-phase features.
+This is the starter build. MIDI, quantized loop launching, uploaded sample packs,
+PWA install support, and Drive/shared upload flow are next-phase features.

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#070711" />
+  <title>THE MATTMACHINE</title>
+  <style>
+    :root {
+      --panel: rgba(8,10,20,.82);
+      --line: rgba(255,255,255,.16);
+      --text: #f8fbff;
+      --muted: #b7c0d9;
+      --pink: #ff2ebd;
+      --cyan: #27e8ff;
+      --green: #6cff65;
+      --yellow: #ffe55c;
+      --red: #ff3d62;
+      --blue: #407cff;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0; min-height: 100%;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,46,189,.28), transparent 36%),
+        radial-gradient(circle at 80% 10%, rgba(39,232,255,.24), transparent 34%),
+        linear-gradient(180deg, #090914 0%, #040408 100%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overscroll-behavior: none;
+      touch-action: manipulation;
+    }
+    body::after {
+      content: ""; position: fixed; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 4px);
+      opacity: .65;
+    }
+    .app { width: min(560px, 100%); margin: 0 auto; padding: 18px 14px 26px; }
+    header { text-align: center; display: grid; gap: 7px; margin-bottom: 14px; }
+    .kicker { color: var(--cyan); font-size: .76rem; font-weight: 900; letter-spacing: .22em; text-transform: uppercase; }
+    h1 {
+      margin: 0; font-size: clamp(2.3rem, 12vw, 4.4rem); line-height: .82;
+      letter-spacing: -.1em; text-transform: uppercase;
+      text-shadow: 0 0 12px var(--cyan), 0 0 28px var(--pink);
+    }
+    h1 span:nth-child(6n+1){color:#ff4040}
+    h1 span:nth-child(6n+2){color:#ff9f1c}
+    h1 span:nth-child(6n+3){color:#ffe55c}
+    h1 span:nth-child(6n+4){color:#6cff65}
+    h1 span:nth-child(6n+5){color:#27e8ff}
+    h1 span:nth-child(6n+6){color:#ff2ebd}
+    .sub { margin: 0; color: var(--muted); font-weight: 750; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 18px 70px rgba(0,0,0,.44), inset 0 0 32px rgba(255,255,255,.035);
+      backdrop-filter: blur(15px);
+    }
+    .transport { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; margin-bottom: 12px; }
+    button, select, input { font: inherit; }
+    button, select {
+      min-height: 50px; border: 0; border-radius: 17px; color: var(--text);
+      background: rgba(255,255,255,.08); font-weight: 900; letter-spacing: .02em;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), 0 8px 20px rgba(0,0,0,.24);
+    }
+    button { cursor: pointer; transition: transform 70ms linear, filter 110ms ease, box-shadow 110ms ease; }
+    button:active, .active { transform: scale(.965); filter: brightness(1.32); box-shadow: 0 0 22px rgba(39,232,255,.34), inset 0 0 0 2px rgba(255,255,255,.32); }
+    .wake { background: linear-gradient(135deg, rgba(39,232,255,.95), rgba(255,46,189,.74)); }
+    .rec { background: linear-gradient(135deg, rgba(255,61,98,.98), rgba(255,46,189,.86)); }
+    .rec.recording { animation: pulse 680ms infinite alternate; }
+    @keyframes pulse { from { filter: brightness(1); } to { filter: brightness(1.55); } }
+    select { padding: 0 12px; outline: none; width: 100%; background: rgba(0,0,0,.36); }
+    label { display: grid; gap: 6px; color: var(--muted); font-size: .72rem; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; }
+    .status { grid-column: 1 / -1; padding: 10px 12px; border-radius: 15px; background: rgba(0,0,0,.28); color: var(--muted); font-size: .82rem; font-weight: 800; text-align: center; }
+    .pads { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px; margin-bottom: 12px; }
+    .pad { min-height: 112px; position: relative; padding: 12px; text-align: left; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+    .pad::before { content: ""; position: absolute; inset: 0; opacity: .24; background: radial-gradient(circle at 80% 5%, #fff, transparent 32%); }
+    .pad b, .pad small, .pad .n { position: relative; }
+    .pad b { font-size: 1.05rem; text-transform: uppercase; }
+    .pad small { color: var(--muted); font-size: .68rem; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; }
+    .pad .n { position: absolute; right: 12px; bottom: 4px; font-size: 2.4rem; font-weight: 1000; opacity: .14; }
+    .pad:nth-child(1){background:linear-gradient(135deg,rgba(255,128,0,.36),rgba(0,0,0,.18));border:1px solid rgba(255,158,0,.55)}
+    .pad:nth-child(2){background:linear-gradient(135deg,rgba(255,35,70,.36),rgba(0,0,0,.18));border:1px solid rgba(255,61,98,.55)}
+    .pad:nth-child(3){background:linear-gradient(135deg,rgba(255,224,20,.32),rgba(0,0,0,.18));border:1px solid rgba(255,229,92,.55)}
+    .pad:nth-child(4){background:linear-gradient(135deg,rgba(166,49,255,.36),rgba(0,0,0,.18));border:1px solid rgba(255,46,189,.48)}
+    .pad:nth-child(5){background:linear-gradient(135deg,rgba(76,255,70,.34),rgba(0,0,0,.18));border:1px solid rgba(108,255,101,.5)}
+    .pad:nth-child(6){background:linear-gradient(135deg,rgba(64,124,255,.36),rgba(0,0,0,.18));border:1px solid rgba(64,124,255,.52)}
+    .pad:nth-child(7){background:linear-gradient(135deg,rgba(255,46,189,.36),rgba(0,0,0,.18));border:1px solid rgba(255,46,189,.55)}
+    .pad:nth-child(8){background:linear-gradient(135deg,rgba(39,232,255,.34),rgba(0,0,0,.18));border:1px solid rgba(39,232,255,.55)}
+    .armed { outline: 3px solid var(--yellow); box-shadow: 0 0 26px rgba(255,229,92,.36); }
+    .controls { padding: 12px; margin-bottom: 12px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    input[type=range] { width: 100%; accent-color: var(--cyan); }
+    .hint { margin: 0; color: var(--muted); font-size: .82rem; line-height: 1.35; }
+    footer { text-align: center; color: var(--muted); font-size: .78rem; font-weight: 800; }
+    footer a { color: var(--green); text-decoration: none; }
+    @media (min-width:480px) { .pads { grid-template-columns: repeat(4, 1fr); } .pad { min-height: 126px; } }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="kicker">mobile sampler prototype</div>
+      <h1 aria-label="THE MATTMACHINE"><span>T</span><span>H</span><span>E</span> <span>M</span><span>A</span><span>T</span><span>T</span><span>M</span><span>A</span><span>C</span><span>H</span><span>I</span><span>N</span><span>E</span></h1>
+      <p class="sub">Touch pads first. Recording now. MIDI later.</p>
+    </header>
+
+    <section class="transport card">
+      <button id="wakeBtn" class="wake">WAKE AUDIO</button>
+      <button id="recBtn" class="rec">REC</button>
+      <label>Pack<select id="pack"><option value="drums">Drums</option><option value="glitch">Glitch</option><option value="arcade">Arcade</option></select></label>
+      <button id="clearBtn">CLEAR PAD</button>
+      <div class="status" id="status">audio asleep · tap WAKE AUDIO</div>
+    </section>
+
+    <section class="pads card" id="pads"></section>
+
+    <section class="controls card">
+      <div class="row">
+        <label>Volume<input id="vol" type="range" min="0" max="1" step=".01" value=".86"></label>
+        <label>Pitch<input id="pitch" type="range" min=".5" max="1.8" step=".01" value="1"></label>
+      </div>
+      <p class="hint">Tap pads to play. Long-press a pad to arm recording. Press REC / STOP to capture mic audio into that individual pad.</p>
+    </section>
+
+    <footer>MATTBEAR · <a href="https://bearicide.github.io">bearicide.github.io</a></footer>
+  </main>
+
+<script>
+const padsEl=document.getElementById("pads"),statusEl=document.getElementById("status"),wakeBtn=document.getElementById("wakeBtn"),
+recBtn=document.getElementById("recBtn"),clearBtn=document.getElementById("clearBtn"),packSel=document.getElementById("pack"),
+vol=document.getElementById("vol"),pitch=document.getElementById("pitch");
+let audio,master,armed=0,mediaRecorder,chunks=[];
+const recorded=new Map();
+const packs={
+  drums:[["Kick","kick"],["Snare","snare"],["Hi-Hat","hat"],["Glitch","glitch"],["Arp Loop","arp"],["Bass","bass"],["Voice","voice"],["FX","fx"]],
+  glitch:[["Zap","zap"],["Bit","bit"],["Crush","crush"],["Scrape","scrape"],["Pulse","pulse"],["Error","error"],["Blip","blip"],["Drop","drop"]],
+  arcade:[["Coin","coin"],["Laser","laser"],["Jump","jump"],["Power","power"],["Door","door"],["Win","win"],["Lose","lose"],["Warp","warp"]]
+};
+function status(t){statusEl.textContent=t}
+async function wake(){if(!audio){audio=new(window.AudioContext||window.webkitAudioContext)();master=audio.createGain();master.gain.value=+vol.value;master.connect(audio.destination)}if(audio.state!=="running")await audio.resume();status("audio awake · ready")}
+function gain(d=.35,p=.85){const g=audio.createGain(),n=audio.currentTime;g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(p,n+.012);g.gain.exponentialRampToValueAtTime(.0001,n+d);g.connect(master);return g}
+function osc(type,f,d,end){const o=audio.createOscillator(),g=gain(d);const n=audio.currentTime,rate=+pitch.value;o.type=type;o.frequency.setValueAtTime(f*rate,n);if(end)o.frequency.exponentialRampToValueAtTime(end*rate,n+d);o.connect(g);o.start(n);o.stop(n+d+.03)}
+function noise(d=.15,type="bandpass",freq=1600){const b=audio.createBuffer(1,audio.sampleRate*d,audio.sampleRate),data=b.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;const s=audio.createBufferSource(),f=audio.createBiquadFilter();f.type=type;f.frequency.value=freq*(+pitch.value);s.buffer=b;s.connect(f);f.connect(gain(d,.65));s.start();s.stop(audio.currentTime+d)}
+function synth(k){switch(k){case"kick":osc("sine",135,.42,42);break;case"snare":noise(.2,"bandpass",1800);osc("triangle",170,.12);break;case"hat":noise(.075,"highpass",6500);break;case"glitch":osc("sawtooth",800,.18,95);break;case"arp":[220,330,440,660].forEach((f,i)=>setTimeout(()=>osc("square",f,.09),i*90));break;case"bass":osc("sine",58,.5);break;case"voice":osc("triangle",260,.13);setTimeout(()=>osc("triangle",310,.13),105);break;case"fx":noise(.55,"highpass",3300);break;case"zap":osc("sawtooth",980,.2,100);break;case"bit":osc("square",310,.1);break;case"crush":noise(.18,"lowpass",750);break;case"scrape":noise(.38,"bandpass",520);break;case"pulse":osc("square",160,.25);break;case"error":osc("sawtooth",70,.24);osc("square",77,.2);break;case"blip":osc("sine",880,.08,440);break;case"drop":osc("triangle",440,.48,52);break;case"coin":osc("square",880,.08);setTimeout(()=>osc("square",1320,.1),80);break;case"laser":osc("sawtooth",1240,.28,240);break;case"jump":osc("square",330,.18,660);break;case"power":osc("triangle",220,.16);setTimeout(()=>osc("triangle",440,.16),90);break;case"door":osc("sawtooth",90,.35,45);break;case"win":[392,523,659].forEach((f,i)=>setTimeout(()=>osc("square",f,.11),i*95));break;case"lose":[330,220,110].forEach((f,i)=>setTimeout(()=>osc("triangle",f,.16),i*115));break;case"warp":osc("sine",120,.55,900);break;}}
+async function play(i){await wake();const b=recorded.get(i);if(b){const s=audio.createBufferSource();s.buffer=b;s.playbackRate.value=+pitch.value;s.connect(gain(b.duration,.9));s.start();return}synth(packs[packSel.value][i][1])}
+function render(){padsEl.innerHTML="";packs[packSel.value].forEach(([name],i)=>{const btn=document.createElement("button");btn.className="pad"+(i===armed?" armed":"");btn.innerHTML=`<small>${recorded.has(i)?"recorded":packSel.value}</small><b>${name}</b><span class="n">${i+1}</span>`;let timer;btn.addEventListener("pointerdown",e=>{e.preventDefault();btn.classList.add("active");timer=setTimeout(()=>{armed=i;render();status("pad "+(i+1)+" armed for recording")},390)},{passive:false});btn.addEventListener("pointerup",e=>{e.preventDefault();btn.classList.remove("active");clearTimeout(timer);play(i)},{passive:false});btn.addEventListener("pointercancel",()=>{btn.classList.remove("active");clearTimeout(timer)});padsEl.appendChild(btn)})}
+async function record(){await wake();if(mediaRecorder&&mediaRecorder.state==="recording"){mediaRecorder.stop();recBtn.textContent="REC";recBtn.classList.remove("recording");status("recording stopped · processing");return}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});chunks=[];mediaRecorder=new MediaRecorder(stream);mediaRecorder.ondataavailable=e=>chunks.push(e.data);mediaRecorder.onstop=async()=>{stream.getTracks().forEach(t=>t.stop());const blob=new Blob(chunks,{type:mediaRecorder.mimeType||"audio/webm"});const arr=await blob.arrayBuffer();const decoded=await audio.decodeAudioData(arr.slice(0));recorded.set(armed,decoded);render();status("saved recording to pad "+(armed+1))};mediaRecorder.start();recBtn.textContent="STOP";recBtn.classList.add("recording");status("recording into pad "+(armed+1))}catch(e){status("mic blocked or unavailable")}}
+wakeBtn.onclick=wake;recBtn.onclick=record;clearBtn.onclick=()=>{recorded.delete(armed);render();status("cleared pad "+(armed+1))};packSel.onchange=render;vol.oninput=()=>{if(master)master.gain.value=+vol.value};render();
+</script>
+</body>
+</html>
