@@ -1,0 +1,19 @@
+{
+  "name": "THE MATTMACHINE",
+  "short_name": "MATTMACHINE",
+  "description": "MATTBEAR mobile sampler and loop launcher.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#060711",
+  "theme_color": "#070711",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/mattmachine-splash.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
