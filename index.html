@@ -2,48 +2,487 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>THE MATTMACHINE - Performance Test</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE MATTMACHINE</title>
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:#050611;color:#f8fbff;font-family:system-ui,sans-serif;touch-action:manipulation}body:before{content:"";position:fixed;inset:0;background:url("assets/MATTBEAR%20-%20Background%20%20hatGPT%20Image%20May%2017%2C%202026%2C%2008_31_42%20PM.png") center/cover no-repeat;opacity:.26;z-index:-2}body:after{content:"";position:fixed;inset:0;background:linear-gradient(180deg,rgba(5,6,17,.58),rgba(4,4,8,.94));z-index:-1}.app{max-width:900px;margin:auto;padding:14px}.card{background:rgba(9,11,24,.88);border:1px solid rgba(255,255,255,.15);border-radius:22px;padding:12px;margin:10px 0;box-shadow:0 18px 60px rgba(0,0,0,.45)}h1{text-align:center;font-size:clamp(2.1rem,9vw,4.4rem);line-height:.9;margin:8px 0;text-shadow:0 0 18px #27e8ff,0 0 28px #ff2ebd}.links,.bar,.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}a,button,label{min-height:44px;border:0;border-radius:15px;background:rgba(255,255,255,.08);color:#f8fbff;font-weight:900;display:flex;align-items:center;justify-content:center;text-decoration:none;padding:0 10px}.primary{background:linear-gradient(135deg,#27e8ff,#ff2ebd)}.good{background:linear-gradient(135deg,#6cff65,#27e8ff);color:#06120a}.danger{background:linear-gradient(135deg,#ff3d62,#ff2ebd)}#status{grid-column:1/-1;text-align:center;color:#aeb8d6;font-size:.78rem;font-weight:800}.pads{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.pad{min-height:106px;display:block;text-align:left;padding:9px;border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(0,0,0,.35));border:1px solid rgba(255,255,255,.12);position:relative;overflow:hidden;touch-action:none}.pad small{display:block;color:#aeb8d6;font-size:.64rem;font-weight:900;text-transform:uppercase}.pad b{display:block;margin-top:14px;font-size:.86rem;text-transform:uppercase}.pad .rec{position:absolute;right:7px;bottom:7px;min-height:30px;border-radius:999px;font-size:.68rem;padding:0 9px;background:rgba(255,61,98,.85)}.loaded{box-shadow:0 0 24px rgba(39,232,255,.35)}.play{outline:3px solid #27e8ff}.looping{outline:3px solid #6cff65}.recOn{box-shadow:0 0 24px rgba(255,61,98,.8)!important}.sel{outline:3px solid #ffe55c}.foot{text-align:center;color:#aeb8d6}.hint{text-align:center;color:#aeb8d6;font-weight:800;margin:.3rem 0}@media(max-width:560px){.links,.bar,.tools{grid-template-columns:1fr 1fr}.pads{gap:7px}.pad{min-height:94px}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+margin:0;
+background:#fff;
+color:#000;
+font-family:Arial,Helvetica,sans-serif;
+}
+main{
+max-width:980px;
+margin:auto;
+padding:16px;
+}
+.header{
+border:2px solid #000;
+padding:18px;
+margin-bottom:12px;
+}
+.small{
+font-size:.72rem;
+letter-spacing:.22em;
+font-weight:700;
+margin-bottom:8px;
+}
+h1{
+margin:0;
+font-size:clamp(2rem,8vw,4.8rem);
+line-height:.92;
+font-weight:900;
+letter-spacing:-.05em;
+}
+.desc{
+margin-top:10px;
+font-size:.95rem;
+font-weight:700;
+max-width:700px;
+line-height:1.4;
+}
+.grid{
+display:grid;
+gap:10px;
+}
+.top{
+grid-template-columns:repeat(4,1fr);
+margin-bottom:12px;
+}
+.controls{
+grid-template-columns:repeat(4,1fr);
+margin-bottom:12px;
+}
+.tools{
+grid-template-columns:repeat(4,1fr);
+margin-top:12px;
+}
+.pads{
+grid-template-columns:repeat(4,1fr);
+}
+button,label,select,a{
+background:#fff;
+color:#000;
+border:2px solid #000;
+min-height:54px;
+padding:10px;
+font-weight:900;
+text-decoration:none;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+button:hover,label:hover,a:hover,select:hover{
+background:#f0f0f0;
+}
+.pad{
+min-height:120px;
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+justify-content:flex-start;
+text-align:left;
+position:relative;
+padding:12px;
+}
+.pad small{
+font-size:.7rem;
+font-weight:700;
+letter-spacing:.12em;
+}
+.pad strong{
+font-size:.95rem;
+margin-top:18px;
+line-height:1.1;
+}
+.pad::after{
+content:"";
+position:absolute;
+right:0;
+bottom:0;
+width:40px;
+height:40px;
+border-right:2px solid #000;
+border-bottom:2px solid #000;
+clip-path:polygon(100% 0,100% 100%,0 100%);
+}
+.loaded{
+background:#f3f3f3;
+}
+.playing{
+background:#000;
+color:#fff;
+}
+.looping{
+outline:4px solid #000;
+}
+.selected{
+box-shadow:inset 0 0 0 4px #000;
+}
+#status{
+grid-column:1/-1;
+font-size:.78rem;
+font-weight:700;
+padding:4px 0;
+}
+.footer{
+margin-top:12px;
+border:2px solid #000;
+padding:12px;
+font-size:.78rem;
+font-weight:700;
+display:flex;
+justify-content:space-between;
+}
+@media(max-width:700px){
+.top,.controls,.tools,.pads{
+grid-template-columns:1fr 1fr;
+}
+.pad{
+min-height:96px;
+}
+}
 </style>
 </head>
 <body>
-<main class="app">
-<div class="links card"><a class="primary" href="https://bearicide.github.io/">MAIN</a><a href="https://bearicide.github.io/music-toys/">MUSIC TOYS</a><a href="https://bearicide.github.io/MATTBEARCADE/">ARCADE</a><a href="https://bearicide.github.io/examples/">EXAMPLES</a></div>
-<header><div style="text-align:center;color:#27e8ff;font-weight:900;letter-spacing:.2em">PERFORMANCE TEST BUILD</div><h1>THE MATTMACHINE</h1><p class="hint">Tap = one-shot · hold = loop · bank loops choke · import slices to selected bank</p></header>
-<section class="bar card"><button id="wake" class="primary">WAKE</button><label>IMPORT<input id="file" type="file" accept="audio/*" hidden></label><button id="reload" class="good">RELOAD</button><button id="stop" class="danger">STOP</button><div id="status">checking sample manifests</div></section>
-<section id="pads" class="pads card"></section>
-<section class="tools card"><button id="autoSlice" class="good">AUTO SLICE ON</button><button id="choke" class="good">CHOKE ON</button><button id="clearBank">CLEAR BANK</button><button id="clear">CLEAR PAD</button></section>
-<footer class="foot card">MATTBEAR · <a style="display:inline;color:#27e8ff;background:none;min-height:0;padding:0" href="https://bearicide.github.io/">bearicide.github.io</a></footer>
+<main>
+<div class="header">
+<div class="small">INDUSTRIAL LOOP CHOPPER SYSTEM</div>
+<h1>THE MATTMACHINE</h1>
+<div class="desc">
+IMPORT AUDIO. AUTO CHOP. TAP FOR ONE-SHOT. HOLD FOR LOOP.
+GLOBAL CHOKE ENABLED.
+</div>
+</div>
+
+<div class="grid top">
+<a href="https://bearicide.github.io/">MAIN</a>
+<a href="https://bearicide.github.io/music-toys/">TOOLS</a>
+<a href="https://bearicide.github.io/MATTBEARCADE/">ARCADE</a>
+<a href="https://bearicide.github.io/examples/">EXAMPLES</a>
+</div>
+
+<div class="grid controls">
+<button id="wake">WAKE</button>
+<label>
+IMPORT
+<input id="file" type="file" accept="audio/*" hidden>
+</label>
+<button id="stop">STOP</button>
+<select id="sliceCount">
+<option value="16">16 CHOPS</option>
+<option value="8">8 CHOPS</option>
+<option value="4">4 CHOPS</option>
+</select>
+<div id="status">SYSTEM READY</div>
+</div>
+
+<div id="pads" class="grid pads"></div>
+
+<div class="grid tools">
+<button id="choke">CHOKE ON</button>
+<button id="clear">CLEAR PAD</button>
+<button id="clearBank">CLEAR BANK</button>
+<button id="panic">PANIC</button>
+</div>
+
+<div class="footer">
+<div>MATTBEAR SYSTEMS</div>
+<div>bearicide.github.io</div>
+</div>
 </main>
+
 <script>
 const keys=['1','2','3','4','q','w','e','r','a','s','d','f','z','x','c','v'];
-const pads=Array.from({length:16},(_,i)=>({name:'PAD '+(i+1),key:keys[i],buf:null,play:false,looping:false,path:''}));
-let ctx,master,sel=0,oneShots=new Set(),loopByBank={A:null,B:null},autoSlice=true,chokeOn=true;
-let mediaStream=null,recorder=null,recChunks=[],recPad=null;
-const $=id=>document.getElementById(id),padsEl=$('pads'),status=$('status');
-function msg(t){status.textContent=t}
-function bankOf(i){return i<8?'A':'B'}function bankStart(i){return i<8?0:8}
-async function wake(){if(!ctx){ctx=new(window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=.9;master.connect(ctx.destination)}if(ctx.state!=='running')await ctx.resume()}
-function cleanName(name){return String(name||'SAMPLE').replace(/\.[^.]+$/,'').replace(/^MATTBEAR[_\-\s]*/i,'').replace(/[_\-]+/g,' ').replace(/\s*\(?\s*CHOP\s*/i,' ').replace(/\s+/g,' ').trim().slice(0,18)||'SAMPLE'}
-function render(){padsEl.innerHTML='';pads.forEach((p,i)=>{let b=document.createElement('button');b.className='pad '+(p.buf?'loaded ':'')+(p.play?'play ':'')+(p.looping?'looping ':'')+(recPad===i?'recOn ':'')+(i===sel?'sel ':'');b.innerHTML='<small>'+p.key.toUpperCase()+' · '+(p.buf?'loaded':'empty')+' · bank '+bankOf(i)+'</small><b>'+p.name+'</b><button class="rec" data-rec="'+i+'">REC</button>';let timer=null,held=false;b.onpointerdown=e=>{if(e.target.dataset.rec!==undefined)return;sel=i;held=false;timer=setTimeout(()=>{held=true;startLoop(i)},180);render()};b.onpointerup=e=>{if(e.target.dataset.rec!==undefined)return;clearTimeout(timer);if(held){stopLoop(i)}else{oneShot(i)}render()};b.onpointercancel=()=>{clearTimeout(timer);if(held)stopLoop(i);render()};padsEl.appendChild(b)});document.querySelectorAll('.rec').forEach(r=>r.onclick=e=>{e.stopPropagation();toggleRec(Number(e.target.dataset.rec))})}
-function gain(){let g=ctx.createGain();g.gain.value=.9;g.connect(master);return g}
-function synth(i){let o=ctx.createOscillator(),g=gain();o.type=i%2?'square':'sawtooth';o.frequency.value=[80,160,220,330,440,55,660,880,120,240,360,480,600,720,840,960][i];o.connect(g);o.start();o.stop(ctx.currentTime+.18)}
-async function oneShot(i){await wake();let p=pads[i];if(!p.buf){synth(i);return}let s=ctx.createBufferSource();s.buffer=p.buf;s.loop=false;s.connect(gain());s.start();oneShots.add(s);p.play=true;s.onended=()=>{oneShots.delete(s);p.play=false;render()};render()}
-function stopLoop(i){let b=bankOf(i);let item=loopByBank[b];if(item&&item.i===i){try{item.src.stop()}catch(e){}loopByBank[b]=null;pads[i].looping=false;pads[i].play=false}}
-async function startLoop(i){await wake();let p=pads[i];if(!p.buf){synth(i);return}let b=bankOf(i);if(chokeOn&&loopByBank[b]&&loopByBank[b].i!==i)stopLoop(loopByBank[b].i);if(loopByBank[b]&&loopByBank[b].i===i)return;let s=ctx.createBufferSource();s.buffer=p.buf;s.loop=true;s.connect(gain());s.start();loopByBank[b]={i,src:s};p.looping=true;p.play=true;s.onended=()=>{if(loopByBank[b]&&loopByBank[b].src===s)loopByBank[b]=null;p.looping=false;p.play=false;render()};render()}
-function stopAll(){[...oneShots].forEach(s=>{try{s.stop()}catch(e){}});oneShots.clear();[0,8].forEach(i=>{for(let n=i;n<i+8;n++)stopLoop(n)});pads.forEach(p=>{p.play=false;p.looping=false});render();msg('stopped')}
-function setPad(i,buffer,name,path){pads[i].buf=buffer;pads[i].name=name;pads[i].path=path;pads[i].play=false;pads[i].looping=false}
-async function loadArray(arr,i,name,path){await wake();let b=await ctx.decodeAudioData(arr.slice(0));setPad(i,b,cleanName(name),path)}
-function cutBuffer(source,startSec,endSec){let sr=source.sampleRate,start=Math.floor(startSec*sr),end=Math.max(start+1,Math.floor(endSec*sr)),frames=end-start;let out=ctx.createBuffer(source.numberOfChannels,frames,sr);for(let ch=0;ch<source.numberOfChannels;ch++)out.copyToChannel(source.getChannelData(ch).slice(start,end),ch);return out}
-async function splitImport(file){await wake();let arr=await file.arrayBuffer();let source=await ctx.decodeAudioData(arr.slice(0));let start=bankStart(sel),base=cleanName(file.name),part=source.duration/8;for(let n=0;n<8;n++){let idx=start+n;stopLoop(idx);setPad(idx,cutBuffer(source,n*part,(n+1)*part),(base+' '+String(n+1).padStart(2,'0')).slice(0,20),'local-chop')}render();msg('import split to pads '+(start+1)+'-'+(start+8))}
-async function toggleRec(i){await wake();if(recorder&&recorder.state==='recording'){recorder.stop();return}try{mediaStream=await navigator.mediaDevices.getUserMedia({audio:true});recPad=i;recChunks=[];recorder=new MediaRecorder(mediaStream);recorder.ondataavailable=e=>{if(e.data.size)recChunks.push(e.data)};recorder.onstop=async()=>{let blob=new Blob(recChunks,{type:recorder.mimeType||'audio/webm'});let arr=await blob.arrayBuffer();await loadArray(arr,i,'recording '+(i+1),'mic');mediaStream.getTracks().forEach(t=>t.stop());recPad=null;render();msg('recorded to pad '+(i+1))};recorder.start();msg('recording pad '+(i+1)+' · tap any REC to stop');render()}catch(e){console.warn(e);msg('record unavailable')}}
-async function fetchFirst(paths){for(const p of paths){try{let r=await fetch(p,{cache:'no-store'});if(r.ok)return {r,path:p}}catch(e){}}return null}
-function guesses(file){let raw=String(file||'').trim(),enc=raw.split('/').map(encodeURIComponent).join('/'),dirs=['samples/','samples/packs/','packs/',''];let out=[];for(const d of dirs){out.push(d+raw,d+enc)}return [...new Set(out)]}
-async function manifest(){for(const m of ['samples/index.json','samples/packs/index.json','packs/index.json','index.json']){let hit=await fetchFirst([m]);if(hit){let j=await hit.r.json();return Array.isArray(j)?j:(j.files||[])}}return []}
-async function autoload(){let files=(await manifest()).slice(0,16);let n=0,miss=0;if(!files.length){msg('no manifest found');return}for(let i=0;i<files.length;i++){let hit=await fetchFirst(guesses(files[i]));if(!hit){miss++;continue}try{await loadArray(await hit.r.arrayBuffer(),i,files[i],hit.path);n++;render()}catch(e){miss++;console.warn(e)}}msg('autoload complete · '+n+' loaded'+(miss?' · '+miss+' missed':''))}
-$('wake').onclick=async()=>{await wake();msg('audio awake')};$('reload').onclick=autoload;$('stop').onclick=stopAll;$('autoSlice').onclick=()=>{autoSlice=!autoSlice;$('autoSlice').textContent='AUTO SLICE '+(autoSlice?'ON':'OFF')};$('choke').onclick=()=>{chokeOn=!chokeOn;$('choke').textContent='CHOKE '+(chokeOn?'ON':'OFF')};$('clear').onclick=()=>{stopLoop(sel);pads[sel]={name:'PAD '+(sel+1),key:keys[sel],buf:null,play:false,looping:false,path:''};render()};$('clearBank').onclick=()=>{let start=bankStart(sel);for(let i=start;i<start+8;i++){stopLoop(i);pads[i]={name:'PAD '+(i+1),key:keys[i],buf:null,play:false,looping:false,path:''}}render();msg('cleared bank '+bankOf(sel))};$('file').onchange=async e=>{let f=e.target.files[0];if(!f)return;if(autoSlice)await splitImport(f);else await loadArray(await f.arrayBuffer(),sel,f.name,'local');e.target.value='';render()};document.addEventListener('keydown',e=>{let i=keys.indexOf(e.key.toLowerCase());if(i>-1){e.preventDefault();sel=i;oneShot(i)}});render();autoload();
+const pads=Array.from({length:16},(_,i)=>({
+name:'CHOP '+(i+1),
+key:keys[i],
+buffer:null,
+playing:false,
+looping:false
+}));
+
+let ctx;
+let master;
+let selected=0;
+let choke=true;
+let activeLoop=null;
+const oneShots=new Set();
+
+const padsEl=document.getElementById('pads');
+const statusEl=document.getElementById('status');
+
+function status(t){statusEl.textContent=t}
+
+async function wake(){
+if(!ctx){
+ctx=new(window.AudioContext||window.webkitAudioContext)();
+master=ctx.createGain();
+master.gain.value=.9;
+master.connect(ctx.destination);
+}
+if(ctx.state!=='running')await ctx.resume();
+}
+
+function draw(){
+padsEl.innerHTML='';
+
+pads.forEach((pad,i)=>{
+const b=document.createElement('button');
+b.className='pad '+
+(pad.buffer?'loaded ':'')+
+(pad.playing?'playing ':'')+
+(pad.looping?'looping ':'')+
+(i===selected?'selected ':'');
+
+b.innerHTML=`
+<small>${pad.key.toUpperCase()}</small>
+<strong>${pad.name}</strong>
+`;
+
+let held=false;
+let timer;
+
+b.onpointerdown=e=>{
+selected=i;
+held=false;
+
+timer=setTimeout(()=>{
+held=true;
+startLoop(i);
+},170);
+
+draw();
+};
+
+b.onpointerup=e=>{
+clearTimeout(timer);
+
+if(held){
+stopLoop(i);
+}else{
+play(i);
+}
+
+draw();
+};
+
+b.onpointercancel=()=>{
+clearTimeout(timer);
+if(held)stopLoop(i);
+};
+
+padsEl.appendChild(b);
+});
+}
+
+function createGain(){
+const g=ctx.createGain();
+g.gain.value=.9;
+g.connect(master);
+return g;
+}
+
+function beep(i){
+const o=ctx.createOscillator();
+const g=createGain();
+o.frequency.value=120+(i*30);
+o.connect(g);
+o.start();
+o.stop(ctx.currentTime+.1);
+}
+
+async function play(i){
+await wake();
+const p=pads[i];
+
+if(!p.buffer){
+beep(i);
+return;
+}
+
+const s=ctx.createBufferSource();
+s.buffer=p.buffer;
+s.connect(createGain());
+s.start();
+
+oneShots.add(s);
+p.playing=true;
+
+s.onended=()=>{
+oneShots.delete(s);
+p.playing=false;
+draw();
+};
+
+draw();
+}
+
+function stopLoop(i){
+if(!activeLoop)return;
+
+try{
+activeLoop.source.stop();
+}catch(e){}
+
+pads[activeLoop.index].looping=false;
+pads[activeLoop.index].playing=false;
+activeLoop=null;
+
+draw();
+}
+
+async function startLoop(i){
+await wake();
+
+const p=pads[i];
+
+if(!p.buffer){
+beep(i);
+return;
+}
+
+if(choke&&activeLoop)stopLoop(activeLoop.index);
+
+const s=ctx.createBufferSource();
+s.buffer=p.buffer;
+s.loop=true;
+s.connect(createGain());
+s.start();
+
+activeLoop={index:i,source:s};
+
+p.looping=true;
+p.playing=true;
+
+draw();
+}
+
+function panic(){
+try{
+if(activeLoop)activeLoop.source.stop();
+}catch(e){}
+
+activeLoop=null;
+
+oneShots.forEach(s=>{
+try{s.stop()}catch(e){}
+});
+
+oneShots.clear();
+
+pads.forEach(p=>{
+p.playing=false;
+p.looping=false;
+});
+
+status('STOPPED');
+draw();
+}
+
+function cutBuffer(source,start,end){
+const sr=source.sampleRate;
+const startFrame=Math.floor(start*sr);
+const endFrame=Math.floor(end*sr);
+const length=endFrame-startFrame;
+
+const out=ctx.createBuffer(source.numberOfChannels,length,sr);
+
+for(let ch=0;ch<source.numberOfChannels;ch++){
+out.copyToChannel(
+source.getChannelData(ch).slice(startFrame,endFrame),
+ch
+);
+}
+
+return out;
+}
+
+async function chop(file){
+await wake();
+panic();
+
+const arr=await file.arrayBuffer();
+const source=await ctx.decodeAudioData(arr.slice(0));
+
+const count=parseInt(document.getElementById('sliceCount').value);
+const sliceLength=source.duration/count;
+
+for(let i=0;i<count;i++){
+pads[i].buffer=cutBuffer(
+source,
+i*sliceLength,
+(i+1)*sliceLength
+);
+
+pads[i].name='CHOP '+String(i+1).padStart(2,'0');
+}
+
+status('CHOPPED '+count+' SLICES');
+draw();
+}
+
+document.getElementById('wake').onclick=async()=>{
+await wake();
+status('AUDIO ACTIVE');
+};
+
+document.getElementById('file').onchange=async e=>{
+const f=e.target.files[0];
+if(f)await chop(f);
+e.target.value='';
+};
+
+document.getElementById('stop').onclick=panic;
+document.getElementById('panic').onclick=panic;
+
+document.getElementById('choke').onclick=()=>{
+choke=!choke;
+document.getElementById('choke').textContent='CHOKE '+(choke?'ON':'OFF');
+};
+
+document.getElementById('clear').onclick=()=>{
+pads[selected]={
+name:'CHOP '+(selected+1),
+key:keys[selected],
+buffer:null,
+playing:false,
+looping:false
+};
+
+draw();
+};
+
+document.getElementById('clearBank').onclick=()=>{
+const start=selected<8?0:8;
+
+for(let i=start;i<start+8;i++){
+pads[i]={
+name:'CHOP '+(i+1),
+key:keys[i],
+buffer:null,
+playing:false,
+looping:false
+};
+}
+
+status('BANK CLEARED');
+draw();
+};
+
+document.addEventListener('keydown',e=>{
+const i=keys.indexOf(e.key.toLowerCase());
+
+if(i>-1){
+e.preventDefault();
+selected=i;
+play(i);
+}
+});
+
+draw();
 </script>
 </body>
 </html>
