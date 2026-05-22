@@ -6,144 +6,25 @@
 <title>THE MATTMACHINE</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{
-margin:0;
-background:#fff;
-color:#000;
-font-family:Arial,Helvetica,sans-serif;
-}
-main{
-max-width:980px;
-margin:auto;
-padding:16px;
-}
-.header{
-border:2px solid #000;
-padding:18px;
-margin-bottom:12px;
-}
-.small{
-font-size:.72rem;
-letter-spacing:.22em;
-font-weight:700;
-margin-bottom:8px;
-}
-h1{
-margin:0;
-font-size:clamp(2rem,8vw,4.8rem);
-line-height:.92;
-font-weight:900;
-letter-spacing:-.05em;
-}
-.desc{
-margin-top:10px;
-font-size:.95rem;
-font-weight:700;
-max-width:700px;
-line-height:1.4;
-}
-.grid{
-display:grid;
-gap:10px;
-}
-.top{
-grid-template-columns:repeat(4,1fr);
-margin-bottom:12px;
-}
-.controls{
-grid-template-columns:repeat(4,1fr);
-margin-bottom:12px;
-}
-.tools{
-grid-template-columns:repeat(4,1fr);
-margin-top:12px;
-}
-.pads{
-grid-template-columns:repeat(4,1fr);
-}
-button,label,select,a{
-background:#fff;
-color:#000;
-border:2px solid #000;
-min-height:54px;
-padding:10px;
-font-weight:900;
-text-decoration:none;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-}
-button:hover,label:hover,a:hover,select:hover{
-background:#f0f0f0;
-}
-.pad{
-min-height:120px;
-display:flex;
-flex-direction:column;
-align-items:flex-start;
-justify-content:flex-start;
-text-align:left;
-position:relative;
-padding:12px;
-}
-.pad small{
-font-size:.7rem;
-font-weight:700;
-letter-spacing:.12em;
-}
-.pad strong{
-font-size:.95rem;
-margin-top:18px;
-line-height:1.1;
-}
-.pad::after{
-content:"";
-position:absolute;
-right:0;
-bottom:0;
-width:40px;
-height:40px;
-border-right:2px solid #000;
-border-bottom:2px solid #000;
-clip-path:polygon(100% 0,100% 100%,0 100%);
-}
-.loaded{
-background:#f3f3f3;
-}
-.playing{
-background:#000;
-color:#fff;
-}
-.looping{
-outline:4px solid #000;
-}
-.selected{
-box-shadow:inset 0 0 0 4px #000;
-}
-#status{
-grid-column:1/-1;
-font-size:.78rem;
-font-weight:700;
-padding:4px 0;
-}
-.footer{
-margin-top:12px;
-border:2px solid #000;
-padding:12px;
-font-size:.78rem;
-font-weight:700;
-display:flex;
-justify-content:space-between;
-}
-@media(max-width:700px){
-.top,.controls,.tools,.pads{
-grid-template-columns:1fr 1fr;
-}
-.pad{
-min-height:96px;
-}
-}
+body{margin:0;background:#fff;color:#000;font-family:Arial,Helvetica,sans-serif}
+main{max-width:980px;margin:auto;padding:16px}
+.header{border:2px solid #000;padding:18px;margin-bottom:12px}
+.small{font-size:.72rem;letter-spacing:.22em;font-weight:700;margin-bottom:8px}
+h1{margin:0;font-size:clamp(2rem,8vw,4.8rem);line-height:.92;font-weight:900;letter-spacing:-.05em}
+.desc{margin-top:10px;font-size:.95rem;font-weight:700;max-width:700px;line-height:1.4}
+.grid{display:grid;gap:10px}
+.top,.controls,.tools{grid-template-columns:repeat(4,1fr);margin-bottom:12px}
+.pads{grid-template-columns:repeat(4,1fr)}
+button,label,select,a{background:#fff;color:#000;border:2px solid #000;min-height:54px;padding:10px;font-weight:900;text-decoration:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+button:hover,label:hover,a:hover,select:hover{background:#f0f0f0}
+.pad{min-height:120px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;text-align:left;position:relative;padding:12px;touch-action:none}
+.pad small{font-size:.7rem;font-weight:700;letter-spacing:.12em}
+.pad strong{font-size:.95rem;margin-top:18px;line-height:1.1}
+.pad::after{content:"";position:absolute;right:0;bottom:0;width:40px;height:40px;border-right:2px solid #000;border-bottom:2px solid #000;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.loaded{background:#f3f3f3}.playing{background:#000;color:#fff}.looping{outline:4px solid #000}.selected{box-shadow:inset 0 0 0 4px #000}
+#status{grid-column:1/-1;font-size:.78rem;font-weight:700;padding:4px 0}
+.footer{margin-top:12px;border:2px solid #000;padding:12px;font-size:.78rem;font-weight:700;display:flex;justify-content:space-between}
+@media(max-width:700px){.top,.controls,.tools,.pads{grid-template-columns:1fr 1fr}.pad{min-height:96px}}
 </style>
 </head>
 <body>
@@ -151,337 +32,57 @@ min-height:96px;
 <div class="header">
 <div class="small">INDUSTRIAL LOOP CHOPPER SYSTEM</div>
 <h1>THE MATTMACHINE</h1>
-<div class="desc">
-IMPORT AUDIO. AUTO CHOP. TAP FOR ONE-SHOT. HOLD FOR LOOP.
-GLOBAL CHOKE ENABLED.
+<div class="desc">IMPORT AUDIO. AUTO CHOP. TAP FOR ONE-SHOT. HOLD FOR LOOP. GLOBAL CHOKE ENABLED.</div>
 </div>
-</div>
-
 <div class="grid top">
 <a href="https://bearicide.github.io/">MAIN</a>
 <a href="https://bearicide.github.io/music-toys/">TOOLS</a>
 <a href="https://bearicide.github.io/MATTBEARCADE/">ARCADE</a>
 <a href="https://bearicide.github.io/examples/">EXAMPLES</a>
 </div>
-
 <div class="grid controls">
 <button id="wake">WAKE</button>
-<label>
-IMPORT
-<input id="file" type="file" accept="audio/*" hidden>
-</label>
+<label>IMPORT<input id="file" type="file" accept="audio/*" hidden></label>
 <button id="stop">STOP</button>
-<select id="sliceCount">
-<option value="16">16 CHOPS</option>
-<option value="8">8 CHOPS</option>
-<option value="4">4 CHOPS</option>
-</select>
+<select id="sliceCount"><option value="16">16 CHOPS</option><option value="8">8 CHOPS</option><option value="4">4 CHOPS</option></select>
 <div id="status">SYSTEM READY</div>
 </div>
-
 <div id="pads" class="grid pads"></div>
-
 <div class="grid tools">
 <button id="choke">CHOKE ON</button>
 <button id="clear">CLEAR PAD</button>
 <button id="clearBank">CLEAR BANK</button>
 <button id="panic">PANIC</button>
 </div>
-
-<div class="footer">
-<div>MATTBEAR SYSTEMS</div>
-<div>bearicide.github.io</div>
-</div>
+<div class="footer"><div>MATTBEAR SYSTEMS</div><div>bearicide.github.io</div></div>
 </main>
-
 <script>
 const keys=['1','2','3','4','q','w','e','r','a','s','d','f','z','x','c','v'];
-const pads=Array.from({length:16},(_,i)=>({
-name:'CHOP '+(i+1),
-key:keys[i],
-buffer:null,
-playing:false,
-looping:false
-}));
-
-let ctx;
-let master;
-let selected=0;
-let choke=true;
-let activeLoop=null;
-const oneShots=new Set();
-
+const pads=Array.from({length:16},(_,i)=>({name:'CHOP '+(i+1),key:keys[i],buffer:null,playing:false,looping:false}));
+let ctx,master,selected=0,choke=true,activeLoop=null,pointerLock=false;
+const activeShots=new Set();
 const padsEl=document.getElementById('pads');
 const statusEl=document.getElementById('status');
-
 function status(t){statusEl.textContent=t}
-
-async function wake(){
-if(!ctx){
-ctx=new(window.AudioContext||window.webkitAudioContext)();
-master=ctx.createGain();
-master.gain.value=.9;
-master.connect(ctx.destination);
-}
-if(ctx.state!=='running')await ctx.resume();
-}
-
-function draw(){
-padsEl.innerHTML='';
-
-pads.forEach((pad,i)=>{
-const b=document.createElement('button');
-b.className='pad '+
-(pad.buffer?'loaded ':'')+
-(pad.playing?'playing ':'')+
-(pad.looping?'looping ':'')+
-(i===selected?'selected ':'');
-
-b.innerHTML=`
-<small>${pad.key.toUpperCase()}</small>
-<strong>${pad.name}</strong>
-`;
-
-let held=false;
-let timer;
-
-b.onpointerdown=e=>{
-selected=i;
-held=false;
-
-timer=setTimeout(()=>{
-held=true;
-startLoop(i);
-},170);
-
-draw();
-};
-
-b.onpointerup=e=>{
-clearTimeout(timer);
-
-if(held){
-stopLoop(i);
-}else{
-play(i);
-}
-
-draw();
-};
-
-b.onpointercancel=()=>{
-clearTimeout(timer);
-if(held)stopLoop(i);
-};
-
-padsEl.appendChild(b);
-});
-}
-
-function createGain(){
-const g=ctx.createGain();
-g.gain.value=.9;
-g.connect(master);
-return g;
-}
-
-function beep(i){
-const o=ctx.createOscillator();
-const g=createGain();
-o.frequency.value=120+(i*30);
-o.connect(g);
-o.start();
-o.stop(ctx.currentTime+.1);
-}
-
-async function play(i){
-await wake();
-const p=pads[i];
-
-if(!p.buffer){
-beep(i);
-return;
-}
-
-const s=ctx.createBufferSource();
-s.buffer=p.buffer;
-s.connect(createGain());
-s.start();
-
-oneShots.add(s);
-p.playing=true;
-
-s.onended=()=>{
-oneShots.delete(s);
-p.playing=false;
-draw();
-};
-
-draw();
-}
-
-function stopLoop(i){
-if(!activeLoop)return;
-
-try{
-activeLoop.source.stop();
-}catch(e){}
-
-pads[activeLoop.index].looping=false;
-pads[activeLoop.index].playing=false;
-activeLoop=null;
-
-draw();
-}
-
-async function startLoop(i){
-await wake();
-
-const p=pads[i];
-
-if(!p.buffer){
-beep(i);
-return;
-}
-
-if(choke&&activeLoop)stopLoop(activeLoop.index);
-
-const s=ctx.createBufferSource();
-s.buffer=p.buffer;
-s.loop=true;
-s.connect(createGain());
-s.start();
-
-activeLoop={index:i,source:s};
-
-p.looping=true;
-p.playing=true;
-
-draw();
-}
-
-function panic(){
-try{
-if(activeLoop)activeLoop.source.stop();
-}catch(e){}
-
-activeLoop=null;
-
-oneShots.forEach(s=>{
-try{s.stop()}catch(e){}
-});
-
-oneShots.clear();
-
-pads.forEach(p=>{
-p.playing=false;
-p.looping=false;
-});
-
-status('STOPPED');
-draw();
-}
-
-function cutBuffer(source,start,end){
-const sr=source.sampleRate;
-const startFrame=Math.floor(start*sr);
-const endFrame=Math.floor(end*sr);
-const length=endFrame-startFrame;
-
-const out=ctx.createBuffer(source.numberOfChannels,length,sr);
-
-for(let ch=0;ch<source.numberOfChannels;ch++){
-out.copyToChannel(
-source.getChannelData(ch).slice(startFrame,endFrame),
-ch
-);
-}
-
-return out;
-}
-
-async function chop(file){
-await wake();
-panic();
-
-const arr=await file.arrayBuffer();
-const source=await ctx.decodeAudioData(arr.slice(0));
-
-const count=parseInt(document.getElementById('sliceCount').value);
-const sliceLength=source.duration/count;
-
-for(let i=0;i<count;i++){
-pads[i].buffer=cutBuffer(
-source,
-i*sliceLength,
-(i+1)*sliceLength
-);
-
-pads[i].name='CHOP '+String(i+1).padStart(2,'0');
-}
-
-status('CHOPPED '+count+' SLICES');
-draw();
-}
-
-document.getElementById('wake').onclick=async()=>{
-await wake();
-status('AUDIO ACTIVE');
-};
-
-document.getElementById('file').onchange=async e=>{
-const f=e.target.files[0];
-if(f)await chop(f);
-e.target.value='';
-};
-
+async function wake(){if(!ctx){ctx=new(window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=.9;master.connect(ctx.destination)}if(ctx.state!=='running')await ctx.resume()}
+function createGain(){const g=ctx.createGain();g.gain.cancelScheduledValues(ctx.currentTime);g.gain.setValueAtTime(0,ctx.currentTime);g.gain.linearRampToValueAtTime(.9,ctx.currentTime+.005);g.connect(master);return g}
+function fadeAndStop(source,gain,time=.012){try{gain.gain.cancelScheduledValues(ctx.currentTime);gain.gain.setValueAtTime(gain.gain.value,ctx.currentTime);gain.gain.linearRampToValueAtTime(0,ctx.currentTime+time);source.stop(ctx.currentTime+time+.002)}catch(e){}}
+function draw(){padsEl.innerHTML='';pads.forEach((pad,i)=>{const b=document.createElement('button');b.className='pad '+(pad.buffer?'loaded ':'')+(pad.playing?'playing ':'')+(pad.looping?'looping ':'')+(i===selected?'selected ':'');b.innerHTML=`<small>${pad.key.toUpperCase()}</small><strong>${pad.name}</strong>`;let held=false;let timer;b.onpointerdown=e=>{e.preventDefault();if(pointerLock)return;pointerLock=true;selected=i;held=false;timer=setTimeout(()=>{held=true;startLoop(i)},170);draw()};b.onpointerup=e=>{e.preventDefault();pointerLock=false;clearTimeout(timer);if(held){stopLoop()}else{play(i)}draw()};b.onpointercancel=()=>{pointerLock=false;clearTimeout(timer);if(held)stopLoop()};padsEl.appendChild(b)})}
+function beep(i){const o=ctx.createOscillator();const g=createGain();o.frequency.value=120+(i*30);o.connect(g);o.start();o.stop(ctx.currentTime+.1)}
+async function play(i){await wake();const p=pads[i];if(!p.buffer){beep(i);return}const source=ctx.createBufferSource();const gain=createGain();source.buffer=p.buffer;source.connect(gain);source.start();activeShots.add({source,gain});p.playing=true;source.onended=()=>{p.playing=false;activeShots.forEach(s=>{if(s.source===source)activeShots.delete(s)});draw()};draw()}
+function stopLoop(){if(!activeLoop)return;fadeAndStop(activeLoop.source,activeLoop.gain);pads[activeLoop.index].looping=false;pads[activeLoop.index].playing=false;activeLoop=null;draw()}
+async function startLoop(i){await wake();const p=pads[i];if(!p.buffer){beep(i);return}if(activeLoop?.index===i)return;if(choke&&activeLoop)stopLoop();const source=ctx.createBufferSource();const gain=createGain();source.buffer=p.buffer;source.loop=true;source.connect(gain);source.start();activeLoop={index:i,source,gain};p.looping=true;p.playing=true;draw()}
+function panic(){stopLoop();activeShots.forEach(s=>{try{s.source.stop()}catch(e){}});activeShots.clear();pads.forEach(p=>{p.playing=false;p.looping=false});draw();status('STOPPED')}
+function cutBuffer(source,start,end){const sr=source.sampleRate;const startFrame=Math.floor(start*sr);const endFrame=Math.floor(end*sr);const fade=Math.min(128,endFrame-startFrame>>1);const length=endFrame-startFrame;const out=ctx.createBuffer(source.numberOfChannels,length,sr);for(let ch=0;ch<source.numberOfChannels;ch++){const data=source.getChannelData(ch).slice(startFrame,endFrame);for(let i=0;i<fade;i++){data[i]*=i/fade;data[data.length-1-i]*=i/fade}out.copyToChannel(data,ch)}return out}
+async function chop(file){await wake();panic();const arr=await file.arrayBuffer();const source=await ctx.decodeAudioData(arr.slice(0));const count=parseInt(document.getElementById('sliceCount').value);const sliceLength=source.duration/count;for(let i=0;i<count;i++){pads[i].buffer=cutBuffer(source,i*sliceLength,(i+1)*sliceLength);pads[i].name='CHOP '+String(i+1).padStart(2,'0');pads[i].playing=false;pads[i].looping=false}status('CHOPPED '+count+' SLICES');draw()}
+document.getElementById('wake').onclick=async()=>{await wake();status('AUDIO ACTIVE')};
+document.getElementById('file').onchange=async e=>{const f=e.target.files[0];if(f)await chop(f);e.target.value=''};
 document.getElementById('stop').onclick=panic;
 document.getElementById('panic').onclick=panic;
-
-document.getElementById('choke').onclick=()=>{
-choke=!choke;
-document.getElementById('choke').textContent='CHOKE '+(choke?'ON':'OFF');
-};
-
-document.getElementById('clear').onclick=()=>{
-pads[selected]={
-name:'CHOP '+(selected+1),
-key:keys[selected],
-buffer:null,
-playing:false,
-looping:false
-};
-
-draw();
-};
-
-document.getElementById('clearBank').onclick=()=>{
-const start=selected<8?0:8;
-
-for(let i=start;i<start+8;i++){
-pads[i]={
-name:'CHOP '+(i+1),
-key:keys[i],
-buffer:null,
-playing:false,
-looping:false
-};
-}
-
-status('BANK CLEARED');
-draw();
-};
-
-document.addEventListener('keydown',e=>{
-const i=keys.indexOf(e.key.toLowerCase());
-
-if(i>-1){
-e.preventDefault();
-selected=i;
-play(i);
-}
-});
-
+document.getElementById('choke').onclick=()=>{choke=!choke;document.getElementById('choke').textContent='CHOKE '+(choke?'ON':'OFF');if(choke&&activeLoop)stopLoop()};
+document.getElementById('clear').onclick=()=>{pads[selected]={name:'CHOP '+(selected+1),key:keys[selected],buffer:null,playing:false,looping:false};draw()};
+document.getElementById('clearBank').onclick=()=>{const start=selected<8?0:8;for(let i=start;i<start+8;i++){pads[i]={name:'CHOP '+(i+1),key:keys[i],buffer:null,playing:false,looping:false}}status('BANK CLEARED');draw()};
+document.addEventListener('keydown',e=>{const i=keys.indexOf(e.key.toLowerCase());if(i>-1){e.preventDefault();selected=i;play(i)}});
 draw();
 </script>
 </body>
