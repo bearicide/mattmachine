@@ -26,7 +26,7 @@ body.performance main{max-width:none;padding:6px}body.performance .top,body.perf
 </head>
 <body>
 <main>
-<div class="header"><div class="small">INDUSTRIAL LOOP CHOPPER SYSTEM</div><h1>THE MATTMACHINE</h1><div class="desc">IMPORT AUDIO. AUTO CHOP. TAP FOR ONE-SHOT. HOLD FOR LOOP. CLEANED MOBILE TOUCH + GLOBAL CHOKE.</div></div>
+<div class="header"><div class="small">INDUSTRIAL LOOP CHOPPER SYSTEM</div><h1>THE MATTMACHINE</h1><div class="desc">IMPORT AUDIO. AUTO CHOP. TAP FOR ONE-SHOT. HOLD FOR LOOP. HARD STOP AUDIO CLEANUP.</div></div>
 <div class="grid top"><a href="https://bearicide.github.io/">MAIN</a><a href="https://bearicide.github.io/music-toys/">TOOLS</a><a href="https://bearicide.github.io/MATTBEARCADE/">ARCADE</a><a href="https://bearicide.github.io/examples/">EXAMPLES</a></div>
 <div class="grid controls"><button id="wake">WAKE</button><label>IMPORT<input id="file" type="file" accept="audio/*" hidden></label><button id="stop" class="danger">STOP</button><select id="sliceCount"><option value="16">16 CHOPS</option><option value="8">8 CHOPS</option><option value="4">4 CHOPS</option></select><div id="status">SYSTEM READY</div></div>
 <div id="pads" class="grid pads"></div>
@@ -42,31 +42,34 @@ const activeShots=new Set(),heldKeys=new Set();
 const padsEl=document.getElementById('pads'),statusEl=document.getElementById('status');
 function status(t){statusEl.textContent=t}
 async function wake(){if(!ctx){ctx=new(window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=.9;master.connect(ctx.destination)}if(ctx.state!=='running')await ctx.resume()}
-function createGain(){const g=ctx.createGain();g.gain.setValueAtTime(0,ctx.currentTime);g.gain.linearRampToValueAtTime(.9,ctx.currentTime+.005);g.connect(master);return g}
-function fadeAndStop(source,gain,time=.015){if(!source)return;try{gain.gain.linearRampToValueAtTime(0,ctx.currentTime+time);source.stop(ctx.currentTime+time+.002)}catch(e){}setTimeout(()=>{try{source.disconnect()}catch(e){}try{gain.disconnect()}catch(e){}},40)}
-function panic(){if(activeLoop){fadeAndStop(activeLoop.source,activeLoop.gain);activeLoop=null}activeShots.forEach(s=>fadeAndStop(s.source,s.gain));activeShots.clear();pads.forEach(p=>{p.playing=false;p.looping=false});draw();status('STOPPED')}
+function createGain(){const g=ctx.createGain();g.gain.setValueAtTime(.9,ctx.currentTime);g.connect(master);return g}
+function killVoice(source,gain){try{source.onended=null}catch(e){}try{source.stop(0)}catch(e){}try{source.disconnect()}catch(e){}try{gain&&gain.disconnect()}catch(e){}}
+function hardStopAll(message='STOPPED'){if(activeLoop){killVoice(activeLoop.source,activeLoop.gain);activeLoop=null}activeShots.forEach(s=>killVoice(s.source,s.gain));activeShots.clear();pads.forEach(p=>{p.playing=false;p.looping=false});draw();status(message)}
+function stopPad(i){activeShots.forEach(s=>{if(s.index===i){killVoice(s.source,s.gain);activeShots.delete(s)}});if(activeLoop&&activeLoop.index===i){killVoice(activeLoop.source,activeLoop.gain);activeLoop=null}pads[i].playing=false;pads[i].looping=false}
+function panic(){hardStopAll('STOPPED')}
 function draw(){padsEl.innerHTML='';pads.forEach((pad,i)=>{const b=document.createElement('button');b.className='pad '+(pad.buffer?'loaded ':'')+(pad.playing?'playing ':'')+(pad.looping?'looping ':'')+(i===selected?'selected ':'');b.innerHTML=`<small>${pad.key.toUpperCase()}</small><strong>${pad.name}</strong><em>${pad.tag}</em>`;let held=false,startX=0,startY=0,moved=false,timer;
-b.onpointerdown=e=>{selected=i;startX=e.clientX;startY=e.clientY;moved=false;held=false;timer=setTimeout(()=>{if(!moved){held=true;startLoop(i)}},260);draw()};
+b.onpointerdown=e=>{selected=i;startX=e.clientX;startY=e.clientY;moved=false;held=false;timer=setTimeout(()=>{if(!moved){held=true;startLoop(i)}},280);draw()};
 b.onpointermove=e=>{const dx=Math.abs(e.clientX-startX),dy=Math.abs(e.clientY-startY);if(dx>12||dy>12){moved=true;clearTimeout(timer)}};
-b.onpointerup=e=>{clearTimeout(timer);if(moved)return;if(held)panic();else play(i)};
+b.onpointerup=e=>{clearTimeout(timer);if(moved)return;if(held){stopPad(i);draw()}else play(i)};
 b.onpointercancel=()=>clearTimeout(timer);
 padsEl.appendChild(b)})}
 function reverseBuffer(buffer){const out=ctx.createBuffer(buffer.numberOfChannels,buffer.length,buffer.sampleRate);for(let ch=0;ch<buffer.numberOfChannels;ch++){const src=buffer.getChannelData(ch),copy=new Float32Array(src.length);for(let i=0;i<src.length;i++)copy[i]=src[src.length-1-i];const fade=Math.min(220,copy.length>>1);for(let i=0;i<fade;i++){copy[i]*=i/fade;copy[copy.length-1-i]*=i/fade}out.copyToChannel(copy,ch)}return out}
-async function play(i){await wake();const p=pads[i];selected=i;if(!p.buffer)return;if(choke)panic();const source=ctx.createBufferSource(),gain=createGain(),shot={source,gain,index:i};source.buffer=p.buffer;if(dirtyPitch)source.playbackRate.value=.9+Math.random()*.2;source.connect(gain);source.onended=()=>{activeShots.delete(shot);p.playing=false;draw()};activeShots.add(shot);p.playing=true;source.start();draw()}
-async function startLoop(i){await wake();const p=pads[i];if(!p.buffer)return;if(activeLoop)panic();const source=ctx.createBufferSource(),gain=createGain();source.buffer=p.buffer;source.loop=true;source.connect(gain);source.start();activeLoop={source,gain,index:i};p.playing=true;p.looping=true;draw()}
+async function play(i){await wake();const p=pads[i];selected=i;if(!p.buffer)return;if(choke)hardStopAll('CHOKE CLEAN');else stopPad(i);const source=ctx.createBufferSource(),gain=createGain(),shot={source,gain,index:i};source.buffer=p.buffer;source.connect(gain);source.onended=()=>{activeShots.delete(shot);p.playing=false;draw()};activeShots.add(shot);p.playing=true;source.start(0);draw()}
+async function startLoop(i){await wake();const p=pads[i];selected=i;if(!p.buffer)return;if(choke)hardStopAll('CHOKE CLEAN');else stopPad(i);const source=ctx.createBufferSource(),gain=createGain();source.buffer=p.buffer;source.loop=true;source.connect(gain);source.start(0);activeLoop={source,gain,index:i};p.playing=true;p.looping=true;draw()}
 function cutBuffer(source,start,end){const sr=source.sampleRate,s=Math.floor(start*sr),e=Math.floor(end*sr),len=Math.max(1,e-s),out=ctx.createBuffer(source.numberOfChannels,len,sr);for(let ch=0;ch<source.numberOfChannels;ch++){const data=source.getChannelData(ch).slice(s,e);out.copyToChannel(data,ch)}return out}
-async function chop(file){await wake();panic();const arr=await file.arrayBuffer();const source=await ctx.decodeAudioData(arr.slice(0));const count=parseInt(document.getElementById('sliceCount').value,10),sliceLength=source.duration/count;for(let i=0;i<16;i++)pads[i]={name:'CHOP '+(i+1),key:keys[i],buffer:null,playing:false,looping:false,tag:'EMPTY'};for(let i=0;i<count;i++){pads[i].buffer=cutBuffer(source,i*sliceLength,(i+1)*sliceLength);pads[i].tag='LOADED'}status('CHOPPED '+count+' SLICES');draw()}
+async function chop(file){await wake();hardStopAll('DECODING...');const arr=await file.arrayBuffer();const source=await ctx.decodeAudioData(arr.slice(0));const count=parseInt(document.getElementById('sliceCount').value,10),sliceLength=source.duration/count;for(let i=0;i<16;i++)pads[i]={name:'CHOP '+(i+1),key:keys[i],buffer:null,playing:false,looping:false,tag:'EMPTY'};for(let i=0;i<count;i++){pads[i].buffer=cutBuffer(source,i*sliceLength,(i+1)*sliceLength);pads[i].tag='LOADED'}status('CHOPPED '+count+' SLICES');draw()}
 async function toggleRecord(){await wake();if(recorder&&recorder.state==='recording'){recorder.stop();return}try{recordStream=await navigator.mediaDevices.getUserMedia({audio:true});recordChunks=[];recorder=new MediaRecorder(recordStream);recorder.ondataavailable=e=>{if(e.data.size)recordChunks.push(e.data)};recorder.onstop=async()=>{const blob=new Blob(recordChunks,{type:'audio/webm'});recordStream.getTracks().forEach(t=>t.stop());const arr=await blob.arrayBuffer();pads[selected].buffer=await ctx.decodeAudioData(arr.slice(0));pads[selected].name='REC '+(selected+1);pads[selected].tag='MIC REC';recorder=null;status('RECORDED');draw()};recorder.start();status('RECORDING...')}catch(e){status('MIC BLOCKED')}}
+function randomizeLoadedPads(){const loaded=pads.filter(p=>p.buffer).map(p=>({buffer:p.buffer,name:p.name,tag:p.tag}));for(let i=loaded.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[loaded[i],loaded[j]]=[loaded[j],loaded[i]]}let n=0;pads.forEach((p,i)=>{if(p.buffer&&loaded[n]){p.buffer=loaded[n].buffer;p.name=loaded[n].name;p.tag=loaded[n].tag;n++}p.key=keys[i]});status('RANDOMIZED LOADED PADS');draw()}
 document.getElementById('wake').onclick=async()=>{await wake();status('AUDIO ACTIVE')};
 document.getElementById('file').onchange=async e=>{if(e.target.files[0])await chop(e.target.files[0]);e.target.value=''};
 document.getElementById('stop').onclick=panic;document.getElementById('panic').onclick=panic;
 document.getElementById('record').onclick=toggleRecord;
-document.getElementById('reverse').onclick=()=>{const p=pads[selected];if(!p.buffer)return;p.buffer=reverseBuffer(p.buffer);p.tag='REVERSED';status('REVERSED PAD');draw()};
-document.getElementById('randomize').onclick=()=>{pads.sort(()=>Math.random()-.5);status('RANDOMIZED');draw()};
-document.getElementById('clear').onclick=()=>{pads[selected].buffer=null;pads[selected].tag='EMPTY';status('PAD CLEARED');draw()};
-document.getElementById('clearAll').onclick=()=>{pads.forEach((p,i)=>pads[i]={name:'CHOP '+(i+1),key:keys[i],buffer:null,playing:false,looping:false,tag:'EMPTY'});panic();status('ALL CLEARED');draw()};
+document.getElementById('reverse').onclick=()=>{const p=pads[selected];if(!p.buffer)return;stopPad(selected);p.buffer=reverseBuffer(p.buffer);p.tag='REVERSED';status('REVERSED PAD');draw()};
+document.getElementById('randomize').onclick=randomizeLoadedPads;
+document.getElementById('clear').onclick=()=>{stopPad(selected);pads[selected].buffer=null;pads[selected].tag='EMPTY';status('PAD CLEARED');draw()};
+document.getElementById('clearAll').onclick=()=>{hardStopAll('ALL CLEARED');pads.forEach((p,i)=>pads[i]={name:'CHOP '+(i+1),key:keys[i],buffer:null,playing:false,looping:false,tag:'EMPTY'});draw()};
 document.getElementById('perf').onclick=()=>document.body.classList.toggle('performance');
-document.getElementById('choke').onclick=()=>{choke=!choke;document.getElementById('choke').textContent='CHOKE '+(choke?'ON':'OFF')};
+document.getElementById('choke').onclick=()=>{choke=!choke;document.getElementById('choke').textContent='CHOKE '+(choke?'ON':'OFF');if(choke)hardStopAll('CHOKE ON')};
 document.addEventListener('keydown',e=>{const key=e.key.toLowerCase(),i=keys.indexOf(key);if(i>-1&&!heldKeys.has(key)){heldKeys.add(key);play(i)}});
 document.addEventListener('keyup',e=>heldKeys.delete(e.key.toLowerCase()));
 draw();
